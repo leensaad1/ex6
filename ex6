@@ -1,0 +1,53 @@
+#DDL
+create database store;
+create table countries(
+    code int primary key,
+    name varchar(20) unicode,
+    continent_name varchar(20) not null
+);
+
+create table users(
+    id int primary key,
+    full_name varchar(20),
+    email varchar(20) unique ,
+    gender char(1) check( gender in ('M','F')),
+    date_of_birth varchar(15),
+    craeted_at datetime,
+    country_code int,
+    foreign key (country_code) references countries(code)
+);
+
+create table orders(
+    id int primary key,
+    user_id int,
+    status varchar(6) check (status in ('start' , 'finish')),
+    created_at datetime,
+    foreign key (user_id) references users(id)
+);
+
+create table products(
+    id int primary key,
+    name varchar(10) not null,
+    price int default 0,
+    status varchar(10) check ( status in ('valid', 'expired')),
+    created_at datetime
+);
+
+create table order_products(
+    order_id int primary key ,
+    product_id int,
+    foreign key (order_id) references orders (id),
+    foreign key (product_id) references products(id),
+    quantity int default 0
+);
+
+
+#DML
+insert into countries values ('22','riyadh','asia');
+insert into users values ('19','leen','leen@gmail.com','F','27/8','19/12','0');
+insert into orders values('2','8','start','19/12');
+insert into products values('20','bread','4','valid','19/12');
+insert into products values('1','toy','40','valid','19/12');
+insert into order_products values('2','1','5');
+update countries set name = 'USA' where code = '0';
+delete from products where name = 'bread';
